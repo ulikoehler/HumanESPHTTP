@@ -1,4 +1,5 @@
 #include "HTTPServer.hpp"
+#include <esp_log.h>
 
 HTTPServer::HTTPServer(): conf(HTTPD_DEFAULT_CONFIG()) {
 }

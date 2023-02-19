@@ -1,19 +1,26 @@
 #include "QueryURLParser.hpp"
+#include <esp_log.h>
 
 QueryURLParser::QueryURLParser(httpd_req_t *req) {
     size_t queryURLLen = httpd_req_get_url_query_len(req) + 1;
 
     if(queryURLLen > 1) {
-        // Allocate filled with \0
+        // Allocate temporary buffer.
+        // In C++17, we could write directly to the std::string using .data()
+        // but we don't want to enforce C++17 yet.
+        char* buf = (char*)malloc(queryURLLen);
+
         this->queryURLString = std::string(queryURLLen, '\0');
-        if (httpd_req_get_url_query_str(req, queryURLString.data(), queryURLLen) != ESP_OK) {
+        if (httpd_req_get_url_query_str(req, buf, queryURLLen) != ESP_OK) {
             ESP_LOGE("Query URL parser", "Failed to extract query URL");
             // Set string to "not found"
             this->queryURLString = "";
+        } else { // Parsed successfully
+            this->queryURLString = std::string(buf, queryURLLen);
         }
+        free(buf);
     }
 }
-
 
 std::string QueryURLParser::GetParameter(const char* key) {
     // Allocate enough space to store the parameter.
@@ -27,7 +34,6 @@ std::string QueryURLParser::GetParameter(const char* key) {
     esp_err_t err = httpd_query_key_value(queryURLString.c_str(), key, buf, bufSize);
     if(err != ESP_OK) {
         ESP_LOGE("Query URL parser", "parsing URL");
-        Serial.println(esp_err_to_name(err));
         free(buf);
         return "";
     }
