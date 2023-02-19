@@ -1,0 +1,25 @@
+{
+    "name": "HumanESPHTTP",
+    "version": "1.0.0",
+    "description": "A high-level C++ API for the ESP-IDF HTTP server (also for Arduino), built by humans, for humans",
+    "keywords": "esp32, http, https",
+    "repository":
+    {
+      "type": "git",
+      "url": "https://github.com/ulikoehler/HumanESPHTTP.git"
+    },
+    "authors":
+    [
+      {
+        "name": "Uli Köhler",
+        "email": "github@techoverflow.net",
+        "url": "https://techoverflow.net"
+      }
+    ],
+    "license": "MIT",
+    "homepage": "https://www.techoverflow.net/",
+    "dependencies": {
+    },
+    "frameworks": "*",
+    "platforms": "espressif32"
+  }
