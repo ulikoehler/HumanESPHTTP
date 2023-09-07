@@ -37,6 +37,7 @@ static const httpd_uri_t helloWorldHandler = {
 
 void setup() {
     // TODO setup wifi or Ethernet
+    // ...
     // Start HTTP server
     http.StartServer();
     http.RegisterHandler(&helloWorldHandler);

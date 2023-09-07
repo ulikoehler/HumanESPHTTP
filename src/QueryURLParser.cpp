@@ -32,8 +32,7 @@ std::string QueryURLParser::GetParameter(const char* key) {
 
     /* Get value of expected key from query string */
     esp_err_t err = httpd_query_key_value(queryURLString.c_str(), key, buf, bufSize);
-    if(err != ESP_OK) {
-        ESP_LOGE("Query URL parser", "parsing URL");
+    if(err != ESP_OK) { // Not found
         free(buf);
         return "";
     }
@@ -44,4 +43,9 @@ std::string QueryURLParser::GetParameter(const char* key) {
     return param;
 }
 
-std::string queryURLString;
+
+bool QueryURLParser::HasParameter(const char* key) {
+    char buf[1]; // Dummy buffer - will lead to truncation or OK if exists, or not found if not exists
+    esp_err_t err = httpd_query_key_value(queryURLString.c_str(), key, buf, 1);
+    return err == ESP_OK || err == ESP_ERR_HTTPD_RESULT_TRUNC;
+}
