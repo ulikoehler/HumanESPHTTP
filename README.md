@@ -13,7 +13,7 @@ enabling you to implement REST APIs and webpages with ease.
 HTTPServer http;
 
 // Example handler
-static const httpd_uri_t rebootHandler = {
+static const httpd_uri_t helloWorldHandler = {
     .uri       = "/api/hello-world",
     .method    = HTTP_GET,
     .handler   = [](httpd_req_t *req) {
@@ -27,7 +27,7 @@ static const httpd_uri_t rebootHandler = {
 void setup() {
     // TODO setup wifi or Ethernet
     http.StartServer();
-    http.RegisterHandler(&myHandler);
+    http.RegisterHandler(&helloWorldHandler);
 }
 ```
 
@@ -41,7 +41,7 @@ void setup() {
 HTTPServer http;
 
 // Example handler
-static const httpd_uri_t rebootHandler = {
+static const httpd_uri_t helloWorldHandler = {
     .uri       = "/api/reboot",
     .method    = HTTP_GET,
     .handler   = [](httpd_req_t *req) {
