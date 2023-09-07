@@ -18,7 +18,7 @@ lib_deps =
 
 ```c++
 #include <Arduino.h>
-#include <HTTPServer.h>
+#include <HTTPServer.hpp>
 
 // Declare server globally
 HTTPServer http;
@@ -27,7 +27,7 @@ HTTPServer http;
 static const httpd_uri_t helloWorldHandler = {
     .uri       = "/api/hello-world",
     .method    = HTTP_GET,
-    .handler   = [](httpd_req_t *req) {
+    .handler   = [](httpd_req_t *request) {
         httpd_resp_set_type(request, "text/plain");
         httpd_resp_sendstr(request, "Hello World!");
 
