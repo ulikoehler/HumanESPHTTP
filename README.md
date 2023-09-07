@@ -3,11 +3,11 @@ ESP-IDF HTTP server high-level API for humans, not for machines.
 This library attempts to provide a simplified API wrapping the ESP-IDF HTTP server,
 enabling you to implement REST APIs and webpages with ease.
 
-## Webserver example
+## Minimal example
 
 ```c++
 #include <Arduino.h>
-#include <HTTPServer.h>
+#include <HTTPServer.hpp>
 
 // Declare server globally
 HTTPServer http;
@@ -16,7 +16,7 @@ HTTPServer http;
 static const httpd_uri_t helloWorldHandler = {
     .uri       = "/api/hello-world",
     .method    = HTTP_GET,
-    .handler   = [](httpd_req_t *req) {
+    .handler   = [](httpd_req_t *request) {
         httpd_resp_set_type(request, "text/plain");
         httpd_resp_sendstr(request, "Hello World!");
 
@@ -26,6 +26,8 @@ static const httpd_uri_t helloWorldHandler = {
 
 void setup() {
     // TODO setup wifi or Ethernet
+    // ...
+    // Start HTTP server
     http.StartServer();
     http.RegisterHandler(&helloWorldHandler);
 }
