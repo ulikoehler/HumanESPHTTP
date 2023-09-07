@@ -3,7 +3,18 @@ ESP-IDF HTTP server high-level API for humans, not for machines.
 This library attempts to provide a simplified API wrapping the ESP-IDF HTTP server,
 enabling you to implement REST APIs and webpages with ease.
 
-## Webserver example
+## How to install
+
+Add this to your `platformio.ini`:
+
+```ini
+lib_deps =
+    ulikoehler/HumanESPHTTP@^1.1.0
+```
+
+## Hello world (webserver) example
+
+[examples/hello-world.cpp](Check out the full hello world example)
 
 ```c++
 #include <Arduino.h>
@@ -26,6 +37,7 @@ static const httpd_uri_t helloWorldHandler = {
 
 void setup() {
     // TODO setup wifi or Ethernet
+    // Start HTTP server
     http.StartServer();
     http.RegisterHandler(&helloWorldHandler);
 }
