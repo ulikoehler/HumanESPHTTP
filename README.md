@@ -52,30 +52,32 @@ void loop() {
 
 ## Query URL parser example
 
+*Note*: The query URL parser does not perform URL decoding.
+
+[examples/query-parser.cpp](Check out the full query parser example)
+
 ```c++
 #include <Arduino.h>
 #include <HTTPServer.h>
-
-// Declare server globally
-HTTPServer http;
-
-// Example handler
-static const httpd_uri_t helloWorldHandler = {
-    .uri       = "/api/reboot",
+#include <QueryURLParser.hpp>
+static const httpd_uri_t queryHandler = {
+    .uri       = "/api/query",
     .method    = HTTP_GET,
-    .handler   = [](httpd_req_t *req) {
-        SendStatusOK(req);
-        delay(20);
-        ESP.restart();
+    .handler   = [](httpd_req_t *request) {
+        QueryURLParser parser(request);
+        httpd_resp_set_type(request, "text/plain");
+        if(parser.HasParameter("param")) {
+            std::string param = parser.GetParameter("param");
+            httpd_resp_send_chunk(request, "Param is: ", HTTPD_RESP_USE_STRLEN);
+            httpd_resp_send_chunk(request, param.c_str(), HTTPD_RESP_USE_STRLEN);
+            httpd_resp_send_chunk(request, nullptr, 0); // Finished
+        } else {
+            httpd_resp_set_type(request, "text/plain");
+            httpd_resp_sendstr(request, "No 'param' query parameter found!");
+        }
         return ESP_OK;
     }
 };
-
-void setup() {
-    // TODO setup wifi or Ethernet
-    http.StartServer();
-    http.RegisterHandler(&myHandler);
-}
 ```
 
 ## Sources
