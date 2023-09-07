@@ -60,6 +60,7 @@ void loop() {
 #include <Arduino.h>
 #include <HTTPServer.h>
 #include <QueryURLParser.hpp>
+
 static const httpd_uri_t queryHandler = {
     .uri       = "/api/query",
     .method    = HTTP_GET,
