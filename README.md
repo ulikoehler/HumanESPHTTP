@@ -29,6 +29,12 @@ void setup() {
     http.StartServer();
     http.RegisterHandler(&helloWorldHandler);
 }
+
+void loop() {
+    // Nothing to do here since the HTTP server
+    // runs in a separate thread
+    delay(1000);
+}
 ```
 
 ## Query URL parser example
