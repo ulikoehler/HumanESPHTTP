@@ -119,6 +119,10 @@ static const httpd_uri_t setPowerHandler = {
 };
 ```
 
+## More examples
+
+* [ESP32 HTTP float query parser with range check example](https://techoverflow.net/2023/09/30/esp32-http-float-query-parser-with-range-check-example-using-humanesphttp/)
+
 ## Sources
 
 This library originates from two of my blogposts on [techoverflow.net](https://techoverflow.net)
