@@ -81,6 +81,41 @@ static const httpd_uri_t queryHandler = {
 };
 ```
 
+### Query URL parser with `float` parameter example
+
+```c++
+
+static const httpd_uri_t setPowerHandler = {
+    .uri       = "/api/set-power",
+    .method    = HTTP_GET,
+    .handler   = [](httpd_req_t *request) {
+        QueryURLParser parser(request);
+        httpd_resp_set_type(request, "text/plain");
+        if(parser.HasParameter("power")) {
+            std::string power = parser.GetParameter("power");
+            // Parse power as float
+            float powerFloat;
+            try {
+              powerFloat = std::stof(power);
+            } catch (const std::invalid_argument& e) {
+              httpd_resp_set_type(request, "text/plain");
+              httpd_resp_sendstr(request, "Error: Invalid argument for power parameter (not a float)!");
+              return ESP_OK;
+            }
+            // TODO Your code goes here!
+            // Example code: send back power
+            httpd_resp_send_chunk(request, "Power is: ", HTTPD_RESP_USE_STRLEN);
+            httpd_resp_send_chunk(request, std::to_string(powerFloat).c_str(), HTTPD_RESP_USE_STRLEN);
+            httpd_resp_send_chunk(request, nullptr, 0); // Finished
+        } else {
+            httpd_resp_set_type(request, "text/plain");
+            httpd_resp_sendstr(request, "No 'power' query parameter found!");
+        }
+        return ESP_OK;
+    }
+};
+```
+
 ## Sources
 
 This library originates from two of my blogposts on [techoverflow.net](https://techoverflow.net)
