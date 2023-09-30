@@ -21,6 +21,7 @@ static const httpd_uri_t queryHandler = {
             httpd_resp_send_chunk(request, nullptr, 0); // Finished
         } else {
             httpd_resp_set_type(request, "text/plain");
+            httpd_resp_set_status(request, "400 Bad Request");
             httpd_resp_sendstr(request, "No 'param' query parameter found!");
         }
         return ESP_OK;
