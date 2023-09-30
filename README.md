@@ -74,6 +74,7 @@ static const httpd_uri_t queryHandler = {
             httpd_resp_send_chunk(request, nullptr, 0); // Finished
         } else {
             httpd_resp_set_type(request, "text/plain");
+            httpd_resp_set_status(request, "400 Bad Request");
             httpd_resp_sendstr(request, "No 'param' query parameter found!");
         }
         return ESP_OK;
@@ -99,6 +100,7 @@ static const httpd_uri_t setPowerHandler = {
               powerFloat = std::stof(power);
             } catch (const std::invalid_argument& e) {
               httpd_resp_set_type(request, "text/plain");
+              httpd_resp_set_status(request, "400 Bad Request");
               httpd_resp_sendstr(request, "Error: Invalid argument for power parameter (not a float)!");
               return ESP_OK;
             }
@@ -109,6 +111,7 @@ static const httpd_uri_t setPowerHandler = {
             httpd_resp_send_chunk(request, nullptr, 0); // Finished
         } else {
             httpd_resp_set_type(request, "text/plain");
+            httpd_resp_set_status(request, "400 Bad Request");
             httpd_resp_sendstr(request, "No 'power' query parameter found!");
         }
         return ESP_OK;
