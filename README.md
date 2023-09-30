@@ -58,7 +58,7 @@ void loop() {
 
 ```c++
 #include <Arduino.h>
-#include <HTTPServer.h>
+#include <HTTPServer.hpp>
 #include <QueryURLParser.hpp>
 
 static const httpd_uri_t queryHandler = {
