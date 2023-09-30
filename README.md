@@ -66,8 +66,8 @@ static const httpd_uri_t queryHandler = {
     .method    = HTTP_GET,
     .handler   = [](httpd_req_t *request) {
         QueryURLParser parser(request);
-        httpd_resp_set_type(request, "text/plain");
         if(parser.HasParameter("param")) {
+            httpd_resp_set_type(request, "text/plain");
             std::string param = parser.GetParameter("param");
             httpd_resp_send_chunk(request, "Param is: ", HTTPD_RESP_USE_STRLEN);
             httpd_resp_send_chunk(request, param.c_str(), HTTPD_RESP_USE_STRLEN);
