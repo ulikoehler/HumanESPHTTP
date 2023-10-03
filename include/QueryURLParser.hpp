@@ -3,7 +3,13 @@
 #include <string>
 #include <esp_http_server.h>
 
+#ifndef _CPP17_AVAILABLE
 #define _CPP17_AVAILABLE (__cplusplus >= 201703L)
+#endif
+
+#ifndef _CPP11_AVAILABLE
+#define _CPP11_AVAILABLE (__cplusplus >= 201103L)
+#endif
 
 // Define HUMANESPHTTP_EXCEPTIONS to false to disable exception-based handling 
 #ifndef HUMANESPHTTP_EXCEPTIONS
