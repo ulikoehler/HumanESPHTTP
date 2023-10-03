@@ -1,5 +1,6 @@
 #include "QueryURLParser.hpp"
 #include <esp_log.h>
+#include <string>
 
 QueryURLParser::QueryURLParser(httpd_req_t *req) {
     size_t queryURLLen = httpd_req_get_url_query_len(req) + 1;
@@ -49,3 +50,158 @@ bool QueryURLParser::HasParameter(const char* key) {
     esp_err_t err = httpd_query_key_value(queryURLString.c_str(), key, buf, 1);
     return err == ESP_OK || err == ESP_ERR_HTTPD_RESULT_TRUNC;
 }
+
+#if _CPP17_AVAILABLE
+
+std::optional<std::string> QueryURLParser::GetParameterOptional(const char* key) {
+    if(HasParameter(key)) {
+        return GetParameter(key);
+    } else {
+        return std::nullopt;
+    }
+}
+
+
+std::optional<int> QueryURLParser::GetParameterIntOptional(const char* key) {
+    std::optional<std::string> param = GetParameterOptional(key);
+    if(param.has_value()) {
+        try {
+            return std::stoi(param.value());
+        } catch(std::invalid_argument& e) {
+            return std::nullopt;
+        }
+    } else {
+        return std::nullopt;
+    }
+}
+
+std::optional<int> QueryURLParser::GetParameterUnsignedIntOptional(const char* key) {
+    std::optional<std::string> param = GetParameterOptional(key);
+    if(param.has_value()) {
+        try {
+            return std::stoi(param.value());
+        } catch(std::invalid_argument& e) {
+            return std::nullopt;
+        }
+    } else {
+        return std::nullopt;
+    }
+}
+
+std::optional<long> QueryURLParser::GetParameterLongOptional(const char* key) {
+    std::optional<std::string> param = GetParameterOptional(key);
+    if(param.has_value()) {
+        try {
+            return std::stol(param.value());
+        } catch(std::invalid_argument& e) {
+            return std::nullopt;
+        }
+    } else {
+        return std::nullopt;
+    }
+}
+
+std::optional<long> QueryURLParser::GetParameterUnsignedLongOptional(const char* key) {
+    std::optional<std::string> param = GetParameterOptional(key);
+    if(param.has_value()) {
+        try {
+            return std::stoul(param.value());
+        } catch(std::invalid_argument& e) {
+            return std::nullopt;
+        }
+    } else {
+        return std::nullopt;
+    }
+}
+
+
+std::optional<long> QueryURLParser::GetParameterFloatOptional(const char* key) {
+    std::optional<std::string> param = GetParameterOptional(key);
+    if(param.has_value()) {
+        try {
+            return std::stof(param.value());
+        } catch(std::invalid_argument& e) {
+            return std::nullopt;
+        }
+    } else {
+        return std::nullopt;
+    }
+}
+
+#endif
+
+#if HUMANESPHTTP_EXCEPTIONS
+std::string QueryURLParser::GetParameterException(const char* key) {
+    if(HasParameter(key)) {
+        return GetParameter(key);
+    } else {
+        throw QueryURLParameterNotFoundException("Parameter " + std::string(key) + "not found");
+    }
+}
+
+int QueryURLParser::GetParameterIntException(const char* key) {
+    if(HasParameter(key)) {
+        std::string value = GetParameter(key);
+        try {
+            return std::stoi(value);
+        } catch(std::invalid_argument& e) {
+            throw QueryURLParameterConversionException("Parameter " + std::string(key) + " = '" + std::string(value) + "' could not be converted to an int");
+        }
+    } else {
+        throw QueryURLParameterNotFoundException("Parameter " + std::string(key) + "not found");
+    }
+}
+
+unsigned int QueryURLParser::GetParameterUnsignedIntException(const char* key) {
+    if(HasParameter(key)) {
+        std::string value = GetParameter(key);
+        try {
+            return std::stoul(value);
+        } catch(std::invalid_argument& e) {
+            throw QueryURLParameterConversionException("Parameter " + std::string(key) + " = '" + std::string(value) + "' could not be converted to an unsigned int");
+        }
+    } else {
+        throw QueryURLParameterNotFoundException("Parameter " + std::string(key) + "not found");
+    }
+
+}
+
+long QueryURLParser::GetParameterLongException(const char* key) {
+    if(HasParameter(key)) {
+        std::string value = GetParameter(key);
+        try {
+            return std::stol(value);
+        } catch(std::invalid_argument& e) {
+            throw QueryURLParameterConversionException("Parameter " + std::string(key) + " = '" + std::string(value) + "' could not be converted to a long");
+        }
+    } else {
+        throw QueryURLParameterNotFoundException("Parameter " + std::string(key) + "not found");
+    }
+}
+
+unsigned long QueryURLParser::GetParameterUnsignedLongException(const char* key) {
+    if(HasParameter(key)) {
+        std::string value = GetParameter(key);
+        try {
+            return std::stoul(value);
+        } catch(std::invalid_argument& e) {
+            throw QueryURLParameterConversionException("Parameter " + std::string(key) + " = '" + std::string(value) + "' could not be converted to an unsigned long");
+        }
+    } else {
+        throw QueryURLParameterNotFoundException("Parameter " + std::string(key) + "not found");
+    }
+}
+
+float QueryURLParser::GetParameterFloatException(const char* key) {
+    if(HasParameter(key)) {
+        std::string value = GetParameter(key);
+        try {
+            return std::stof(value);
+        } catch(std::invalid_argument& e) {
+            throw QueryURLParameterConversionException("Parameter " + std::string(key) + " = '" + std::string(value) + "' could not be converted to a float");
+        }
+    } else {
+        throw QueryURLParameterNotFoundException("Parameter " + std::string(key) + "not found");
+    }
+}
+#endif // HUMANESPHTTP_EXCEPTIONS
