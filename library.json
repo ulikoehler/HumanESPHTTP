@@ -1,7 +1,7 @@
 {
     "name": "HumanESPHTTP",
     "version": "1.1.0",
-    "description": "A high-level C++ API for the ESP-IDF HTTP server (also for Arduino), built by humans, for humans",
+    "description": "A high-level C++ API for the ESP-IDF HTTP server (for Arduino or ESP-IDF), built by humans, for humans",
     "keywords": "esp32, http, https",
     "repository":
     {
