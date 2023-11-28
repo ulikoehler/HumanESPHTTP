@@ -124,6 +124,7 @@ static const httpd_uri_t setPowerHandler = {
 * [ESP32 HTTP float query parser with range check example](https://techoverflow.net/2023/09/30/esp32-http-float-query-parser-with-range-check-example-using-humanesphttp/)
 * [ESP-IDF (no Arduino) example](https://github.com/ulikoehler/HumanESPHTTP/blob/master/examples/esp-idf-hello-world)
 * [ESP32 HTTP POST with JSON body using ArduinoJson](https://techoverflow.net/2023/11/28/esp32-http-post-with-json-body-using-arduinojson/)
+* [ESP-IDF HTTP webserver minimal ArduinoJson serialization example](https://techoverflow.net/2023/03/09/esp-idf-http-webserver-minimal-arduinojson-serialization-example/)
 
 ## Sources
 
