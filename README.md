@@ -119,6 +119,27 @@ static const httpd_uri_t setPowerHandler = {
 };
 ```
 
+### ArduinoJson response serialization example
+
+```cpp
+static const httpd_uri_t valueHandler = {
+    .uri       = "/api/value",
+    .method    = HTTP_GET,
+    .handler   = [](httpd_req_t *req) {
+        httpd_resp_set_type(req, "application/json");
+        // create json docuemnt
+        DynamicJsonDocument json(1024);
+        json["value"] = 1.0;
+        // Serialize JSON to string
+        std::string buf;
+        serializeJson(json, buf);
+        // Send response
+        httpd_resp_send(req, buf.c_str(), buf.length());
+        return ESP_OK;
+    }
+};
+```
+
 ## More examples
 
 * [ESP32 HTTP float query parser with range check example](https://techoverflow.net/2023/09/30/esp32-http-float-query-parser-with-range-check-example-using-humanesphttp/)
