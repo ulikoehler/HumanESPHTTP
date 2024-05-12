@@ -143,41 +143,46 @@ static const httpd_uri_t valueHandler = {
 ## Utility functions
 
 ```c++
+
 /**
  * Utility function, handles a single query parameter,
- * parses it as float and responds or calls the callback
+ * parses it as float and responds with JSON
+ * in case of error.
+ * 
+ * In case of success, the callback is called with the
+ * parsed float value and is expected to respond
  * 
  * @param paramName 
  * @param request 
  * @param json 
  */
-void HandleSingleFloatQueryParam(const char* paramName, httpd_req_t *request, std::function<void(float, httpd_req_t *request)> callback) {
+esp_err_t HandleSingleFloatQueryParam(const char* paramName, httpd_req_t *request, std::function<void(float, httpd_req_t *request)> callback) {
     QueryURLParser parser(request);
     if(parser.HasParameter(paramName)) {
         httpd_resp_set_type(request, "text/plain");
-        std::string thresholdStr = parser.GetParameter(paramName);
-        if(!thresholdStr) {
+        std::string paramStr = parser.GetParameter(paramName);
+        if(!paramStr) {
             httpd_resp_set_type(request, "application/json");
             httpd_resp_set_status(request, "400 Bad Request");
             std::string response = std::string(
                 "{\"status\": \"error\", \"msg\": \"Error: Invalid argument for"
-            ) + paramName + " parameter (string is empty)!\"}"
+            ) + paramName + " parameter (string is empty)!\"}";
             httpd_resp_sendstr(request, response.c_str());
             return ESP_OK;
         }
 
         // Parse threshold as float
-        float thresholdFloat;
+        float paramFloat;
         try {
-            thresholdFloat = std::stof(thresholdStr);
+            paramFloat = std::stof(paramStr);
             // Parsed successfully, set in NVS
-            callback(thresholdFloat, request);
+            callback(paramFloat, request);
         } catch (const std::invalid_argument& e) {
             httpd_resp_set_type(request, "application/json");
             httpd_resp_set_status(request, "400 Bad Request");
             std::string response = std::string(
                 "{\"status\": \"error\", \"msg\": \"Error: Invalid argument for"
-            ) + paramName + " parameter (not a float)!\"}"
+            ) + paramName + " parameter (not a float)!\"}";
             httpd_resp_sendstr(request, response.c_str());
             return ESP_OK;
         }
@@ -188,7 +193,7 @@ void HandleSingleFloatQueryParam(const char* paramName, httpd_req_t *request, st
         httpd_resp_set_status(request, "400 Bad Request");
         std::string response = std::string(
             "{\"status\": \"error\", \"msg\": \"Error: No '"
-        ) + paramName + "' query parameter found!\"}"
+        ) + paramName + "' query parameter found!\"}";
         httpd_resp_sendstr(request, response.c_str());
     }
     return ESP_OK;
