@@ -161,7 +161,7 @@ esp_err_t HandleSingleFloatQueryParam(const char* paramName, httpd_req_t *reques
     if(parser.HasParameter(paramName)) {
         httpd_resp_set_type(request, "text/plain");
         std::string paramStr = parser.GetParameter(paramName);
-        if(!paramStr) {
+        if(paramStr.empty()) {
             httpd_resp_set_type(request, "application/json");
             httpd_resp_set_status(request, "400 Bad Request");
             std::string response = std::string(
