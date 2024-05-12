@@ -140,6 +140,61 @@ static const httpd_uri_t valueHandler = {
 };
 ```
 
+## Utility functions
+
+```c++
+/**
+ * Utility function, handles a single query parameter,
+ * parses it as float and responds or calls the callback
+ * 
+ * @param paramName 
+ * @param request 
+ * @param json 
+ */
+void HandleSingleFloatQueryParam(const char* paramName, httpd_req_t *request, std::function<void(float, httpd_req_t *request)> callback) {
+    QueryURLParser parser(request);
+    if(parser.HasParameter(paramName)) {
+        httpd_resp_set_type(request, "text/plain");
+        std::string thresholdStr = parser.GetParameter(paramName);
+        if(!thresholdStr) {
+            httpd_resp_set_type(request, "application/json");
+            httpd_resp_set_status(request, "400 Bad Request");
+            std::string response = std::string(
+                "{\"status\": \"error\", \"msg\": \"Error: Invalid argument for"
+            ) + paramName + " parameter (string is empty)!\"}"
+            httpd_resp_sendstr(request, response.c_str());
+            return ESP_OK;
+        }
+
+        // Parse threshold as float
+        float thresholdFloat;
+        try {
+            thresholdFloat = std::stof(thresholdStr);
+            // Parsed successfully, set in NVS
+            callback(thresholdFloat, request);
+        } catch (const std::invalid_argument& e) {
+            httpd_resp_set_type(request, "application/json");
+            httpd_resp_set_status(request, "400 Bad Request");
+            std::string response = std::string(
+                "{\"status\": \"error\", \"msg\": \"Error: Invalid argument for"
+            ) + paramName + " parameter (not a float)!\"}"
+            httpd_resp_sendstr(request, response.c_str());
+            return ESP_OK;
+        }
+        httpd_resp_send_chunk(request, "{\"status\": \"ok\"}", HTTPD_RESP_USE_STRLEN);
+        httpd_resp_send_chunk(request, nullptr, 0); // Finished
+    } else {
+        httpd_resp_set_type(request, "application/json");
+        httpd_resp_set_status(request, "400 Bad Request");
+        std::string response = std::string(
+            "{\"status\": \"error\", \"msg\": \"Error: No '"
+        ) + paramName + "' query parameter found!\"}"
+        httpd_resp_sendstr(request, response.c_str());
+    }
+    return ESP_OK;
+}
+```
+
 ## More examples
 
 * [ESP32 HTTP float query parser with range check example](https://techoverflow.net/2023/09/30/esp32-http-float-query-parser-with-range-check-example-using-humanesphttp/)
