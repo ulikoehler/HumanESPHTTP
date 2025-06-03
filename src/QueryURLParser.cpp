@@ -1,6 +1,7 @@
 #include "QueryURLParser.hpp"
 #include <esp_log.h>
 #include <string>
+#include <stdexcept>
 
 QueryURLParser::QueryURLParser(httpd_req_t *req) {
     size_t queryURLLen = httpd_req_get_url_query_len(req) + 1;
