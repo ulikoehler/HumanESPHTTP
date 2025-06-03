@@ -138,6 +138,8 @@ std::string QueryURLParser::GetParameterException(const char* key) {
     } else {
         throw QueryURLParameterNotFoundException("Parameter " + std::string(key) + "not found");
     }
+    // Unreachable
+    return "";
 }
 
 int QueryURLParser::GetParameterIntException(const char* key) {
@@ -151,6 +153,8 @@ int QueryURLParser::GetParameterIntException(const char* key) {
     } else {
         throw QueryURLParameterNotFoundException("Parameter " + std::string(key) + "not found");
     }
+    // Unreachable
+    return 0;
 }
 
 unsigned int QueryURLParser::GetParameterUnsignedIntException(const char* key) {
@@ -164,6 +168,8 @@ unsigned int QueryURLParser::GetParameterUnsignedIntException(const char* key) {
     } else {
         throw QueryURLParameterNotFoundException("Parameter " + std::string(key) + "not found");
     }
+    // Unreachable
+    return 0;
 
 }
 
@@ -178,6 +184,8 @@ long QueryURLParser::GetParameterLongException(const char* key) {
     } else {
         throw QueryURLParameterNotFoundException("Parameter " + std::string(key) + "not found");
     }
+    // Unreachable
+    return 0;
 }
 
 unsigned long QueryURLParser::GetParameterUnsignedLongException(const char* key) {
@@ -191,6 +199,8 @@ unsigned long QueryURLParser::GetParameterUnsignedLongException(const char* key)
     } else {
         throw QueryURLParameterNotFoundException("Parameter " + std::string(key) + "not found");
     }
+    // Unreachable
+    return 0;
 }
 
 float QueryURLParser::GetParameterFloatException(const char* key) {
@@ -204,5 +214,7 @@ float QueryURLParser::GetParameterFloatException(const char* key) {
     } else {
         throw QueryURLParameterNotFoundException("Parameter " + std::string(key) + "not found");
     }
+    // Unreachable
+    return 0.0f;
 }
 #endif // HUMANESPHTTP_EXCEPTIONS
