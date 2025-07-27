@@ -13,12 +13,13 @@
 
 // Define HUMANESPHTTP_EXCEPTIONS to false to disable exception-based handling 
 #ifndef HUMANESPHTTP_EXCEPTIONS
-#define HUMANESPHTTP_EXCEPTIONS true
+#define HUMANESPHTTP_EXCEPTIONS false
 #endif
 
 // Define a custom exception QueryURLParserException
 #if HUMANESPHTTP_EXCEPTIONS
 #include <exception>
+
 class QueryURLParserException : public std::exception {
 public:
     QueryURLParserException(const char* message) : message(message) {}
@@ -149,7 +150,7 @@ public:
      * If the parameter does not exist, return an empty optional
      * If the int can't be parsed, return an empty optional
      */
-    std::optional<int> GetParameterUnsignedIntOptional(const char* key);
+    std::optional<unsigned int> GetParameterUnsignedIntOptional(const char* key);
 
     /**
      * @brief Get the integer value of the parameter with the given key, if it exists
@@ -165,7 +166,7 @@ public:
      * If the parameter does not exist, return an empty optional
      * If the long can't be parsed, return an empty optional
      */
-    std::optional<long> GetParameterUnsignedLongOptional(const char* key);
+    std::optional<unsigned long> GetParameterUnsignedLongOptional(const char* key);
 
     /**
      * @brief Get the integer value of the parameter with the given key, if it exists
@@ -173,7 +174,7 @@ public:
      * If the parameter does not exist, return an empty optional
      * If the int can't be parsed, return an empty optional
      */
-    std::optional<long> GetParameterFloatOptional(const char* key);
+    std::optional<float> GetParameterFloatOptional(const char* key);
     #endif
 
 private:

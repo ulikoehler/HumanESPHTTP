@@ -83,16 +83,16 @@ std::optional<int> QueryURLParser::GetParameterIntOptional(const char* key) {
     }
 }
 
-std::optional<int> QueryURLParser::GetParameterUnsignedIntOptional(const char* key) {
+std::optional<unsigned int> QueryURLParser::GetParameterUnsignedIntOptional(const char* key) {
     std::optional<std::string> param = GetParameterOptional(key);
     if(param.has_value()) {
         char* endptr;
         const char* str = param.value().c_str();
-        long result = strtol(str, &endptr, 10);
+        unsigned long result = strtoul(str, &endptr, 10);
         
         // Check if conversion was successful, result is non-negative, and fits in int
-        if (endptr != str && *endptr == '\0' && result >= 0 && result <= INT_MAX) {
-            return static_cast<int>(result);
+        if (endptr != str && *endptr == '\0' && result <= UINT_MAX) {
+            return static_cast<unsigned int>(result);
         } else {
             return std::nullopt;
         }
@@ -119,7 +119,7 @@ std::optional<long> QueryURLParser::GetParameterLongOptional(const char* key) {
     }
 }
 
-std::optional<long> QueryURLParser::GetParameterUnsignedLongOptional(const char* key) {
+std::optional<unsigned long> QueryURLParser::GetParameterUnsignedLongOptional(const char* key) {
     std::optional<std::string> param = GetParameterOptional(key);
     if(param.has_value()) {
         char* endptr;
@@ -128,7 +128,7 @@ std::optional<long> QueryURLParser::GetParameterUnsignedLongOptional(const char*
         
         // Check if conversion was successful
         if (endptr != str && *endptr == '\0') {
-            return static_cast<long>(result);
+            return static_cast<unsigned long>(result);
         } else {
             return std::nullopt;
         }
