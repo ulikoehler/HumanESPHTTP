@@ -30,6 +30,11 @@ public:
      */
     void RegisterHandler(const httpd_uri_t *uri_handler);
 
+    /**
+     * @brief Set CORS headers on an HTTP response to allow all origins
+     */
+    static void SetCORSHeaders(httpd_req_t* req);
+
     httpd_handle_t server = nullptr;
     httpd_config_t conf;
 };
