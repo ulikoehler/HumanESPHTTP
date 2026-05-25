@@ -13,6 +13,9 @@
  */
 class HTTPServer {
 public:
+    static constexpr size_t DefaultMaxURIHandlers = 40;
+    static constexpr size_t DefaultMaxResponseHeaders = 16;
+
     HTTPServer();
 
     /**
@@ -37,4 +40,7 @@ public:
 
     httpd_handle_t server = nullptr;
     httpd_config_t conf;
+
+private:
+    void ApplyDefaultConfig();
 };
